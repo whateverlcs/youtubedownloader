@@ -1,13 +1,13 @@
-# Youtube Video/Audio Downloader
+# X/Youtube Video/Audio Downloader
 
 <p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/whateverlcs/youtubedownloader?color=red">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/whateverlcs/videodownloader?color=red">
   
-  <img alt="GitHub Size Repository" src="https://img.shields.io/github/repo-size/whateverlcs/youtubedownloader?color=red">
+  <img alt="GitHub Size Repository" src="https://img.shields.io/github/repo-size/whateverlcs/videodownloader?color=red">
     
-  <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/whateverlcs/youtubedownloader?color=red">
+  <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/whateverlcs/videodownloader?color=red">
   
-  <img alt="GitHub Stars Repository" src="https://img.shields.io/github/stars/whateverlcs/youtubedownloader?style=social">
+  <img alt="GitHub Stars Repository" src="https://img.shields.io/github/stars/whateverlcs/videodownloader?style=social">
 </p>
 
 
@@ -23,8 +23,8 @@ Antes de rodar a aplicação, você deve:
 
 ## Como usar
 
-1. Clone o repositório: `git clone https://github.com/whateverlcs/youtubedownloader`.
-2. Navegue até o diretório da solução: `cd YoutubeDownloader`.
+1. Clone o repositório: `git clone https://github.com/whateverlcs/videodownloader`.
+2. Navegue até o diretório da solução: `cd VideoDownloader`.
 3. Garante que o `ffmpeg.exe` e `yt-dlp.exe` estão posicionados no local correto.
 4. Realize o Build e rode a solução.
 5. Insira o Link, selecione se deseja realizar o download de um video ou audio e clique em download.

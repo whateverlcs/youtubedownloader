@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 
-namespace YoutubeDownloader.ViewModels
+namespace VideoDownloader.ViewModels
 {
     public class ShellViewModel : Conductor<IScreen>.Collection.OneActive
     {

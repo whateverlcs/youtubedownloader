@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace YoutubeDownloader.Views
+namespace VideoDownloader.Views
 {
     /// <summary>
     /// Interaction logic for IndexView.xaml

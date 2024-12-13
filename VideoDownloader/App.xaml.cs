@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows;
 
-namespace YoutubeDownloader
+namespace VideoDownloader
 {
     /// <summary>
     /// Interaction logic for App.xaml

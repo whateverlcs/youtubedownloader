@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace YoutubeDownloader.Controllers
+namespace VideoDownloader.Controllers
 {
     public class ControlLogs
     {

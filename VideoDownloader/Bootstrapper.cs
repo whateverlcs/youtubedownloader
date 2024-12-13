@@ -1,8 +1,8 @@
 ﻿using Caliburn.Micro;
 using System.Windows;
-using YoutubeDownloader.ViewModels;
+using VideoDownloader.ViewModels;
 
-namespace YoutubeDownloader
+namespace VideoDownloader
 {
     public class Bootstrapper : BootstrapperBase
     {

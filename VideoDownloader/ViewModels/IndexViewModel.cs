@@ -1,9 +1,9 @@
 ﻿using Caliburn.Micro;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Windows;
-using YoutubeDownloader.Controllers;
+using VideoDownloader.Controllers;
 
-namespace YoutubeDownloader.ViewModels
+namespace VideoDownloader.ViewModels
 {
     public class IndexViewModel : Screen
     {
@@ -102,6 +102,32 @@ namespace YoutubeDownloader.ViewModels
             }
         }
 
+        public void DownloadXVideoOrAudio()
+        {
+            if (string.IsNullOrEmpty(TxtLinkX))
+            {
+                MessageBox.Show("Please enter a link from X to proceed with the download.", "Please enter a link", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if (!TxtLinkX.Contains("x.com/"))
+            {
+                MessageBox.Show("Please insert a valid X video link to download.", "Please enter a valid link", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            if (SelectSaveDirectory())
+            {
+                Loading = true;
+                TextLoading = "DOWNLOADING";
+
+                Thread thread = new Thread(DownloadXVideoOrAudioThread);
+                thread.IsBackground = true;
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+            }
+        }
+
         public bool SelectSaveDirectory()
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
@@ -117,6 +143,36 @@ namespace YoutubeDownloader.ViewModels
         }
 
         public async void DownloadYoutubeVideoOrAudioThread()
+        {
+            try
+            {
+                bool sucess = await cp.DownloadAudioOrVideoFromYoutube(TxtLinkX, RbVideo ? "Video" : "Audio");
+
+                if (sucess)
+                {
+                    MessageBox.Show("Download Completed.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("An error occurred while downloading the inserted video/audio. Please try again, if the error persists, contact support.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception e)
+            {
+                clog.LogException(e.ToString(), "DownloadYoutubeVideoOrAudioThread()");
+                MessageBox.Show("An error occurred while downloading the inserted video/audio. Please try again, if the error persists, contact support.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                Loading = false;
+                TextLoading = "LOADING";
+                TxtLinkX = "";
+                RbVideo = true;
+                RbAudio = false;
+            }
+        }
+
+        public async void DownloadXVideoOrAudioThread()
         {
             try
             {

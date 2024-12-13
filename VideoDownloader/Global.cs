@@ -1,4 +1,4 @@
-﻿namespace YoutubeDownloader
+﻿namespace VideoDownloader
 {
     public static class Global
     {

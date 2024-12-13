@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace YoutubeDownloader.Views
+namespace VideoDownloader.Views
 {
     /// <summary>
     /// Interaction logic for ShellView.xaml

@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
-using YoutubeDownloader.ViewModels;
+using VideoDownloader.ViewModels;
 
-namespace YoutubeDownloader
+namespace VideoDownloader
 {
     public static class ActiveView
     {
