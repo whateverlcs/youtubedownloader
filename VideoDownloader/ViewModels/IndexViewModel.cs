@@ -172,11 +172,11 @@ namespace VideoDownloader.ViewModels
             }
         }
 
-        public async void DownloadXVideoOrAudioThread()
+        public void DownloadXVideoOrAudioThread()
         {
             try
             {
-                bool sucess = await cp.DownloadAudioOrVideoFromYoutube(TxtLinkX, RbVideo ? "Video" : "Audio");
+                bool sucess = cp.DownloadAudioOrVideoFromX(TxtLinkX, RbVideo ? "Video" : "Audio");
 
                 if (sucess)
                 {

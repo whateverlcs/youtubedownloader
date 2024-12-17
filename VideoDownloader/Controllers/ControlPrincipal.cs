@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
 using YoutubeDLSharp;
 using YoutubeDLSharp.Options;
 
@@ -26,36 +26,37 @@ namespace VideoDownloader.Controllers
             }
         }
 
-        public async Task<bool> DownloadAudioOrVideoFromX(string url, string type)
+        public bool DownloadAudioOrVideoFromX(string url, string type)
         {
             try
             {
-                var ytdl = new YoutubeDL();
-                ytdl.YoutubeDLPath = @"./Utils/yt-dlp";
+                string outputPath = $"{Global.DirectorySaveDownload}{(type.Equals("Video") ? "video_%(id)s.%(ext)s" : "audio_%(id)s.%(ext)s")}";
 
-                var options = new OptionSet();
-
-                if (type.Equals("Video"))
+                var process = new Process
                 {
-                    options = new OptionSet
+                    StartInfo = new ProcessStartInfo
                     {
-                        Output = Path.Combine(Global.DirectorySaveDownload, "%(title)s.%(ext)s"), // Nome do arquivo de saída
-                        Format = "bestvideo+bestaudio/best"
-                    };
-                }
-                else
+                        FileName = @"./Utils/yt-dlp",
+                        Arguments = type.Equals("Video") ? $"{url} -N 4 --concurrent-fragments 4 --no-check-certificate -o \"{outputPath}\"" : $"{url} -x --audio-format mp3 -N 4 --concurrent-fragments 4 --no-check-certificate -o \"{outputPath}\"",
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.Start();
+
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                process.WaitForExit();
+
+                if (process.ExitCode != 0)
                 {
-                    options = new OptionSet
-                    {
-                        Output = Path.Combine(Global.DirectorySaveDownload, "%(title)s.%(ext)s"),
-                        Format = "bestaudio/best",
-                        ExtractAudio = true,
-                        AudioFormat = AudioConversionFormat.Mp3,
-                        AudioQuality = 0
-                    };
+                    return false;
                 }
 
-                var res = await ytdl.RunWithOptions(url, options);
                 return true;
             }
             catch (Exception e)
