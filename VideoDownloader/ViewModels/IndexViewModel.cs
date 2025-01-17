@@ -31,6 +31,18 @@ namespace VideoDownloader.ViewModels
             }
         }
 
+        private bool _exibirBotaoDownloadX = true;
+
+        public bool ExibirBotaoDownloadX
+        {
+            get { return _exibirBotaoDownloadX; }
+            set
+            {
+                _exibirBotaoDownloadX = value;
+                NotifyOfPropertyChange(() => ExibirBotaoDownloadX);
+            }
+        }
+
         private string _txtLinkX;
 
         public string TxtLinkX
@@ -51,6 +63,9 @@ namespace VideoDownloader.ViewModels
             set
             {
                 _rbVideo = value;
+
+                ExibirBotaoDownloadX = _rbVideo;
+
                 NotifyOfPropertyChange(() => RbVideo);
             }
         }
@@ -63,6 +78,9 @@ namespace VideoDownloader.ViewModels
             set
             {
                 _rbAudio = value;
+
+                ExibirBotaoDownloadX = !_rbAudio;
+
                 NotifyOfPropertyChange(() => RbAudio);
             }
         }
@@ -176,9 +194,9 @@ namespace VideoDownloader.ViewModels
         {
             try
             {
-                bool sucess = cp.DownloadAudioOrVideoFromX(TxtLinkX, RbVideo ? "Video" : "Audio");
+                var sucess = cp.DownloadAudioOrVideoFromX(TxtLinkX);
 
-                if (sucess)
+                if (sucess.Result)
                 {
                     MessageBox.Show("Download Completed.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 }

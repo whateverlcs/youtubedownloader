@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.IO;
+using System.Net.Http;
 using YoutubeDLSharp;
 using YoutubeDLSharp.Options;
 
@@ -26,44 +27,54 @@ namespace VideoDownloader.Controllers
             }
         }
 
-        public bool DownloadAudioOrVideoFromX(string url, string type)
+        public async Task<bool> DownloadAudioOrVideoFromX(string url)
         {
             try
             {
-                string outputPath = $"{Global.DirectorySaveDownload}{(type.Equals("Video") ? "video_%(id)s.%(ext)s" : "audio_%(id)s.%(ext)s")}";
+                string fxTwitterUrl = url
+                    .Replace("twitter.com", "d.fxtwitter.com")
+                    .Replace("x.com", "d.fxtwitter.com");
 
-                var process = new Process
+                string pathFileDownloaded = $"{Global.DirectorySaveDownload}twittervid.com_{GenerateRandomCharacters(10)}.mp4";
+
+                using (HttpClient client = new HttpClient())
                 {
-                    StartInfo = new ProcessStartInfo
+                    HttpResponseMessage response = await client.GetAsync(fxTwitterUrl + ".mp4");
+                    response.EnsureSuccessStatusCode();
+
+                    Uri downloadUri = response.RequestMessage.RequestUri;
+
+                    if (downloadUri != null && downloadUri.ToString().Contains("video.twimg.com"))
                     {
-                        FileName = @"./Utils/yt-dlp",
-                        Arguments = type.Equals("Video") ? $"{url} -N 4 --concurrent-fragments 4 --no-check-certificate -o \"{outputPath}\"" : $"{url} -x --audio-format mp3 -N 4 --concurrent-fragments 4 --no-check-certificate -o \"{outputPath}\"",
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
+                        byte[] videoData = await client.GetByteArrayAsync(downloadUri);
+                        await File.WriteAllBytesAsync(pathFileDownloaded, videoData);
+                        return true;
                     }
-                };
-
-                process.Start();
-
-                string output = process.StandardOutput.ReadToEnd();
-                string error = process.StandardError.ReadToEnd();
-
-                process.WaitForExit();
-
-                if (process.ExitCode != 0)
-                {
-                    return false;
+                    else
+                    {
+                        return false;
+                    }
                 }
-
-                return true;
             }
             catch (Exception e)
             {
-                clog.LogException(e.ToString(), $"DownloadAudioOrVideoFromX(string {url}, string {(type.Equals("Video") ? "Video" : "Audio")})");
+                clog.LogException(e.ToString(), $"DownloadAudioOrVideoFromX(string {url}");
                 return false;
             }
+        }
+
+        public string GenerateRandomCharacters(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var random = new Random();
+            var result = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(result);
         }
     }
 }
